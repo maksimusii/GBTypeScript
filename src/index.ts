@@ -3,6 +3,9 @@ import { renderSearchStubBlock } from './search-results.js'
 import { renderUserBlock } from './user.js'
 import { renderToast } from './lib.js'
 
+localStorage.setItem('username', 'Maks')
+localStorage.setItem('avatarUrl', '/img/avatar.png' )
+
 window.addEventListener('DOMContentLoaded', () => {
   renderUserBlock('Wade Warren','/img/avatar.png', 2)
   renderSearchFormBlock(new Date('2021-12-12'), new Date('2022-12-15'))
