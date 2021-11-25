@@ -7,14 +7,17 @@ export function renderSearchFormBlock (inDate?: Date, outDate?: Date) {
   const maxDayNextMonth = (new Date(curentDate.getFullYear(), curentDate.getUTCMonth() + 2, 0)).getDate()
   const maxDayValue = curentDate.getFullYear() + '-' + ((curentDate.getMonth() > 8) ? (curentDate.getMonth() + 2) : ('0' + (curentDate.getMonth() + 2))) + '-' + maxDayNextMonth
   const minDayValue = curentDate.getFullYear() + '-' + ((curentDate.getMonth() > 8) ? (curentDate.getMonth() + 1) : ('0' + (curentDate.getMonth() + 1))) + '-' + ((curentDate.getDate() > 9) ? curentDate.getDate() : ('0' + curentDate.getDate()))
+  
+  
   renderBlock(
     'search-form-block',
     `
+    <form id="search-form">
       <fieldset class="search-filedset">
         <div class="row">
           <div>
             <label for="city">Город</label>
-            <input id="city" type="text" disabled value="Санкт-Петербург" />
+            <input id="city" type="text" value="Санкт-Петербург" name="city" />
             <input type="hidden" disabled value="59.9386,30.3141" />
           </div>
           <!--<div class="providers">
