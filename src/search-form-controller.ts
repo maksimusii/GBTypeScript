@@ -7,7 +7,7 @@ export interface ISearchFromData {
   coordinates: string
   maxPriceDay: number
 }
-
+// Получение данных из формы поиска
 export function getFormData() {
   const form: HTMLFormElement = document.querySelector('#search-form')
   form.onsubmit = (event) => {

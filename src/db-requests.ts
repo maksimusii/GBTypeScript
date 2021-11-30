@@ -1,6 +1,5 @@
 
 import { IFaivoriteItem } from './user-data.js'
-//import { IPlace } from './search-result-controller.js'
 import { ISearchFromData } from './search-form-controller.js'
 
 export async function getHotelsData(searchData: ISearchFromData): Promise<[]> {

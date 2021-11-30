@@ -14,14 +14,13 @@ export interface IPlace {
   remoteness: number
   description: string
 }
-
+// Переменная для ID 5 минтного интервала для бронирование
 let intervalStopID: number
 
-
+//Функция для получение данных по доступным отелям для бронирования
 export function searchHotelData(searchData: ISearchFromData) {
   getHotelsData(searchData)
     .then((data) => {
-      
       if (data.length === 0) {
         renderEmptyOrErrorSearchBlock('There not any hotels for booking.')
         throw Error('There not any hotels for booking.')
@@ -35,7 +34,7 @@ export function searchHotelData(searchData: ISearchFromData) {
     })
 }
 
-
+//Функция установки 5-и минутного интервала для бронирования
 function requestTimeout() {
   intervalStopID = setTimeout(()=> {
     renderSearchStubBlock()
@@ -46,13 +45,14 @@ function requestTimeout() {
   }, 300000)
 }
 
+//Функция добавление в избранное
 export function toggleFavoriteItem() {
   const faivotiteHearts = document.querySelectorAll('.favorites')
   let currentFaivoriteItems = [{}]
+
   if (localStorage.getItem('favoriteItems') != null) {
     currentFaivoriteItems = Object.keys(JSON.parse(localStorage.getItem('favoriteItems')))
   } 
-  
 
   for (let i = 0 ; i < faivotiteHearts.length; i++ ) {
     if (currentFaivoriteItems.length != 0) {
@@ -73,6 +73,8 @@ export function toggleFavoriteItem() {
     })
   }
 } 
+
+// Функция для изменения списка избраного у пользователя
 function changeData(id: number, hasFavorite: boolean) {
   getItemById(id)
     .then((data: IFaivoriteItem) => {
@@ -90,7 +92,7 @@ function changeData(id: number, hasFavorite: boolean) {
       }
     })
 }
-
+// Функция перегенерации данных польователя
 function regenerateUserData() {
   localStorage.setItem('favoriteItems', JSON.stringify(favoriteInfoItems))
   localStorage.setItem('favoritesAmount', Object.keys(favoriteInfoItems).length.toString())
@@ -98,6 +100,7 @@ function regenerateUserData() {
   renderUserBlock(person.username, person.avatarUrl, person.favoitAmount)
 }
 
+//Функция обработки нажати якнопки бронирования
 export function handleBookingButton() {
   const bookingButton = document.querySelectorAll('#booking-button')
   
@@ -108,7 +111,7 @@ export function handleBookingButton() {
   }
 }
 
-
+//Функция для бронирования и внесения данных в БД
 function setBookigData(id: number) {
   const inData = (<HTMLInputElement>document.getElementById('check-in-date')).value
   const outData = (<HTMLInputElement>document.getElementById('check-out-date')).value
