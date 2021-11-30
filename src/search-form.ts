@@ -1,6 +1,7 @@
 import { renderBlock } from './lib.js'
 
 export function renderSearchFormBlock (inDate?: Date, outDate?: Date) {
+  //Generate Date data
   const curentDate = new Date(Date.now())
   const valueInDate = inDate ? inDate.getFullYear() + '-' + ((inDate.getMonth() > 8) ? (inDate.getMonth() + 1) : ('0' + (inDate.getMonth() + 1))) + '-' + ((inDate.getDate() > 9) ? inDate.getDate() : ('0' + inDate.getDate())): curentDate.getFullYear() + '-' + ((curentDate.getMonth() > 8) ? (curentDate.getMonth() + 1) : ('0' + (curentDate.getMonth() + 1))) + '-' + ((curentDate.getDate() > 8) ? curentDate.getDate() + 1 : ('0' + curentDate.getDate() + 1))
   const valueOutDate = outDate ? outDate.getFullYear() + '-' + ((outDate.getMonth() > 8) ? (outDate.getMonth() + 1) : ('0' + (outDate.getMonth() + 1))) + '-' + ((outDate.getDate() > 9) ? outDate.getDate() : ('0' + outDate.getDate())): curentDate.getFullYear() + '-' + ((curentDate.getMonth() > 8) ? (curentDate.getMonth() + 1) : ('0' + (curentDate.getMonth() + 1))) + '-' + ((curentDate.getDate() > 7) ? curentDate.getDate() + 2: ('0' + curentDate.getDate() + 2))
@@ -18,7 +19,7 @@ export function renderSearchFormBlock (inDate?: Date, outDate?: Date) {
           <div>
             <label for="city">Город</label>
             <input id="city" type="text" value="Санкт-Петербург" name="city" />
-            <input type="hidden" disabled value="59.9386,30.3141" />
+            <input type="hidden" value="59.9386,30.3141" name="coordinates"/>
           </div>
           <!--<div class="providers">
             <label><input type="checkbox" name="provider" value="homy" checked /> Homy</label>
