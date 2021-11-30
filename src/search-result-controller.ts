@@ -1,9 +1,10 @@
-import { renderSearchResultsBlock, renderEmptyOrErrorSearchBlock } from './search-results.js'
+import { renderSearchResultsBlock, renderEmptyOrErrorSearchBlock, renderSearchStubBlock } from './search-results.js'
 import { ISearchFromData } from './search-form-controller.js'
-import { setFaivoriteData } from './db-requests.js'
+import { getItemById, setBooking, getHotelsData } from './db-requests.js'
 import { favoriteInfoItems, IFaivoriteItem } from './user-data.js'
 import { getUserData, person } from './user-controller.js'
 import { renderUserBlock } from './user.js'
+import { renderToast } from './lib.js'
 
 export interface IPlace {
   id: number
@@ -14,28 +15,44 @@ export interface IPlace {
   description: string
 }
 
+let intervalStopID: number
 
-export async function getBookingData(searchData: ISearchFromData): Promise<IPlace> {
-  return fetch(`http://localhost:3030/places/?coordinates=${searchData.coordinates}&checkInDate=1623761669999&checkOutDate=1623761679999&maxPrice=${searchData.maxPriceDay}`)
-    .then((response) => {
-      return response.text()
-    })
-    .then((responseText) => {
-      return JSON.parse(responseText)
-    })
+
+export function searchHotelData(searchData: ISearchFromData) {
+  getHotelsData(searchData)
     .then((data) => {
+      
       if (data.length === 0) {
         renderEmptyOrErrorSearchBlock('There not any hotels for booking.')
         throw Error('There not any hotels for booking.')
       }
       renderSearchResultsBlock(data)
+      if (intervalStopID) {
+        clearInterval(intervalStopID)
+      }
+      requestTimeout()
       return data
     })
 }
 
+
+function requestTimeout() {
+  intervalStopID = setTimeout(()=> {
+    renderSearchStubBlock()
+    renderToast(
+      {text: 'Врямя бронирования истекло. Повторите поиск.', type: 'success'},
+      {name: 'Понял', handler: () => {console.log('Уведомление закрыто')}}
+    )
+  }, 300000)
+}
+
 export function toggleFavoriteItem() {
   const faivotiteHearts = document.querySelectorAll('.favorites')
-  const currentFaivoriteItems = [] || Object.keys(JSON.parse(localStorage.getItem('favoriteItems')))
+  let currentFaivoriteItems = [{}]
+  if (localStorage.getItem('favoriteItems') != null) {
+    currentFaivoriteItems = Object.keys(JSON.parse(localStorage.getItem('favoriteItems')))
+  } 
+  
 
   for (let i = 0 ; i < faivotiteHearts.length; i++ ) {
     if (currentFaivoriteItems.length != 0) {
@@ -57,7 +74,7 @@ export function toggleFavoriteItem() {
   }
 } 
 function changeData(id: number, hasFavorite: boolean) {
-  setFaivoriteData(id)
+  getItemById(id)
     .then((data: IFaivoriteItem) => {
       let favoriteInfoItem: IFaivoriteItem 
       if (Object.keys(data).length === 0) {
@@ -80,3 +97,36 @@ function regenerateUserData() {
   getUserData()
   renderUserBlock(person.username, person.avatarUrl, person.favoitAmount)
 }
+
+export function handleBookingButton() {
+  const bookingButton = document.querySelectorAll('#booking-button')
+  
+  for (let i = 0 ; i < bookingButton.length; i++ ) {
+    bookingButton[i].addEventListener('click',function() {
+      setBookigData(+bookingButton[i].getAttribute('data-id'))
+    })
+  }
+}
+
+
+function setBookigData(id: number) {
+  const inData = (<HTMLInputElement>document.getElementById('check-in-date')).value
+  const outData = (<HTMLInputElement>document.getElementById('check-out-date')).value
+  setBooking(id, inData, outData)
+    .then((data) => {
+      if (data.name != 'BadRequest') {
+        renderToast(
+          {text: `Отель ${data.name} успешно забронирован с ${inData} по ${outData}`, type: 'success'},
+          {name: 'Понял', handler: () => {console.log('Уведомление закрыто')}}
+        )
+      } else {
+        renderToast(
+          {text: `${data.message}`, type: 'alert'},
+          {name: 'Понял', handler: () => {console.log('Уведомление закрыто')}}
+        )
+      }
+      
+    })
+  clearInterval(intervalStopID)
+  renderSearchStubBlock()
+} 

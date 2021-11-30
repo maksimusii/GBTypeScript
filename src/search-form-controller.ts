@@ -1,4 +1,4 @@
-import { getBookingData } from './search-result-controller.js'
+import { searchHotelData } from './search-result-controller.js'
 
 export interface ISearchFromData {
   city: string
@@ -22,7 +22,7 @@ export function getFormData() {
       coordinates: formData.get('coordinates').toString(),
       maxPriceDay: +formData.get('price')
     }
-    getBookingData(searchData)
+    searchHotelData(searchData)
     return false;
   }
 }

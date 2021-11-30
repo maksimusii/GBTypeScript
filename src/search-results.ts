@@ -1,5 +1,5 @@
 import { renderBlock } from './lib.js'
-import { toggleFavoriteItem, IPlace } from './search-result-controller.js'
+import { toggleFavoriteItem, IPlace, handleBookingButton } from './search-result-controller.js'
 
 
 export function renderSearchStubBlock () {
@@ -60,7 +60,7 @@ export function renderSearchResultsBlock (searchData: []) {
           <div class="result-info--descr">${data.description}</div>
           <div class="result-info--footer">
             <div>
-              <button>Забронировать</button>
+              <button id="booking-button" data-id="${data.id}">Забронировать</button>
             </div>
           </div>
         </div>
@@ -71,4 +71,5 @@ export function renderSearchResultsBlock (searchData: []) {
     </ul>`
   )
   toggleFavoriteItem()
+  handleBookingButton()
 }
