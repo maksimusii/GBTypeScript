@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "public\\scripts",
+    "target": "es2020",
+    "module": "es2020",
+    "moduleResolution": "node"
+  },
+  "files": [
+    "src\\index.ts"
+  ]
+}
