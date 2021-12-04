@@ -3,9 +3,10 @@
     "outDir": "public\\scripts",
     "target": "es2020",
     "module": "es2020",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "allowJs": true
   },
-  "files": [
-    "src\\index.ts"
+  "include": [
+    "src/**/*"
   ]
 }

@@ -5,10 +5,12 @@ export function setUserData() {
 }
 
 export interface IFaivoriteItem {
-  id: number
-  name: string
-  image: string
+  id: number | string
+  name?: string
+  image?: string
   message?: string
+  titels?: string
+  photos?: string[]
 }
 
 export interface IFaivoriteData {

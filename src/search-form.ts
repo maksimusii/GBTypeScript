@@ -21,10 +21,10 @@ export function renderSearchFormBlock (inDate?: Date, outDate?: Date) {
             <input id="city" type="text" value="Санкт-Петербург" name="city" />
             <input type="hidden" value="59.9386,30.3141" name="coordinates"/>
           </div>
-          <!--<div class="providers">
-            <label><input type="checkbox" name="provider" value="homy" checked /> Homy</label>
-            <label><input type="checkbox" name="provider" value="flat-rent" checked /> FlatRent</label>
-          </div>--!>
+          <div class="providers">
+            <label><input  id="homy" type="checkbox" name="provider" value="homy" checked /> Homy</label>
+            <label><input id="flat-rent" type="checkbox" name="provider" value="flat-rent" checked /> FlatRent</label>
+          </div>
         </div>
         <div class="row">
           <div>
@@ -37,7 +37,7 @@ export function renderSearchFormBlock (inDate?: Date, outDate?: Date) {
           </div>
           <div>
             <label for="max-price">Макс. цена суток</label>
-            <input id="max-price" type="text" value="" name="price" class="max-price" />
+            <input id="max-price" type="text" value="" name="price" class="max-price" required />
           </div>
           <div>
             <div><button>Найти</button></div>
