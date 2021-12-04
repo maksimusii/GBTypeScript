@@ -1,13 +1,8 @@
+import { ISearchData } from './SearchData.js'
 import { searchHotelData } from './search-result-controller.js'
 
-export interface ISearchFromData {
-  city: string
-  inData: string
-  outData: string
-  coordinates: string
-  maxPriceDay: number
-}
 // Получение данных из формы поиска
+
 export function getFormData() {
   const form: HTMLFormElement = document.querySelector('#search-form')
   form.onsubmit = (event) => {
@@ -15,14 +10,15 @@ export function getFormData() {
   
     const formData = new FormData(form);
 
-    const searchData : ISearchFromData = {
+    const searchData : ISearchData = {
       city: formData.get('city').toString(),
       inData: formData.get('checkin').toString(),
       outData: formData.get('checkout').toString(),
       coordinates: formData.get('coordinates').toString(),
       maxPriceDay: +formData.get('price')
-    }
+    } 
     searchHotelData(searchData)
-    return false;
   }
+  return false;
 }
+
