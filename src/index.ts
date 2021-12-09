@@ -1,20 +1,22 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { renderSearchFormBlock } from './search-form.js'
 import { renderSearchStubBlock } from './search-results.js'
 import { renderUserBlock } from './user.js'
 import { renderToast } from './lib.js'
 
 //Генерация в данных в LocalStorage
+
 const userInfo = {'username': 'Wade Warren', 'avatarUrl': '/img/avatar.png'} 
 localStorage.setItem('user', JSON.stringify(userInfo))
-localStorage.setItem('favoritesAmount', '3' )
+localStorage.setItem('favoritesAmount', '5' )
 
 
 
 class User {
-  username: string
+  public username: string
   avatarUrl: string
   favoitAmount: number
-  constructor (username?: string, avatarUrl?: string, favoriteAmount?: number) {
+  constructor (username: string, avatarUrl: string, favoriteAmount: number) {
     this.username = username,
     this.avatarUrl = avatarUrl
     this.favoitAmount = favoriteAmount
@@ -26,11 +28,11 @@ let userFavoriteAmount: unknown
 
 let person: User 
 
-function getUserData() {
+function getUserData(): void {
   if (localStorage.getItem('user') == null) {
     person = new User('annonimous', '/img/empty-user.png', 0)
   } else {
-    userData = new User(JSON.parse(localStorage.getItem('user')).username, JSON.parse(localStorage.getItem('user')).avatarUrl, getFavoritesAmount())
+    userData = new User(JSON.parse(localStorage.getItem('user')!).username, JSON.parse(localStorage.getItem('user')!).avatarUrl, getFavoritesAmount()!)
   }
   if(userData instanceof User) {
     person = new User(userData.username, userData.avatarUrl, userData.favoitAmount)
@@ -42,7 +44,7 @@ function getFavoritesAmount() {
   if (localStorage.getItem('favoritesAmount') == null) {
     return 0
   } else {
-    userFavoriteAmount = +localStorage.getItem('favoritesAmount')
+    userFavoriteAmount = +localStorage.getItem('favoritesAmount')!
   }
   if(typeof userFavoriteAmount == 'number') {
     return userFavoriteAmount
@@ -50,10 +52,10 @@ function getFavoritesAmount() {
 }
 
 interface ISearchFromData {
-  city: string,
-  inData: string,
-  outData: string,
-  maxPriceDay: number
+  city?: string,
+  inData?: string,
+  outData?: string,
+  maxPriceDay?: number
 }
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IPlace {
@@ -61,14 +63,14 @@ interface IPlace {
 }
 
 function searchRequest () {
-  const placeData = []
+  const placeData: [] = []
   if (Math.round(Math.random() * 1)) {
     return Promise.resolve(placeData)
   } else {
     return Promise.reject(placeData)
   } 
 }
-function searchFunc(data: ISearchFromData, callback?: (error?: Error, placeData?: IPlace) => void): void {
+function searchFunc(data: ISearchFromData, callback: (error: Error | null, placeData: IPlace| null) => void): void {
   console.log(data)
   setInterval(() => {
     searchRequest()
@@ -76,7 +78,7 @@ function searchFunc(data: ISearchFromData, callback?: (error?: Error, placeData?
         callback(null, id)
       })
       .catch ((error) => {
-        callback(error)
+        callback(error, null)
       })
   }, 2000) 
 }
@@ -88,20 +90,22 @@ window.addEventListener('DOMContentLoaded', () => {
   renderSearchFormBlock(new Date('2021-12-12'), new Date('2021-12-15'))
   renderSearchStubBlock()
   
-  const form: HTMLFormElement = document.querySelector('#search-form')
+  const form: HTMLFormElement = document.querySelector('#search-form')!
   form.onsubmit = (event) => {
     event.preventDefault()
   
     const formData = new FormData(form);
-
+    
     const searchData : ISearchFromData = {
-      city: formData.get('city').toString(),
-      inData: formData.get('checkin').toString(),
-      outData: formData.get('checkout').toString(),
-      maxPriceDay: +formData.get('price')
+      
+      city: formData.get('city')?.toString(),
+      inData: formData.get('checkin')?.toString(),
+      outData: formData.get('checkout')?.toString(),
+      maxPriceDay: +formData.get('price')!
     }
     
-    searchFunc(searchData, (error?: Error, placeData?: IPlace ) => {
+    
+    searchFunc(searchData, (error?: Error | null, placeData?: IPlace | null ) => {
       if (error == null && placeData != []) {
         console.log(placeData)
       } else {
@@ -113,6 +117,9 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   renderToast(
     {text: 'Это пример уведомления. Используйте его при необходимости', type: 'success'},
-    {name: 'Понял', handler: () => {console.log('Уведомление закрыто')}}
+    {name: 'Понял', handler: () => toastM()}
   )
+  function toastM() {
+    console.log('Уведомление закрыто')
+  }
 })
