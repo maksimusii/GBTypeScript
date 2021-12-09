@@ -66,7 +66,6 @@ export class FlatRentSdk {
      * @returns {Promise<Object|null>} Flat.
      */
   get(id) {
-    console.log(id)
     const flat = this.database.find((item) => {
       return item.id === id
     })

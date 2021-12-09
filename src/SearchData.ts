@@ -10,3 +10,5 @@ export interface ISearchData {
     coordinates?: string
     maxPriceDay?: number
   }
+
+  

@@ -1,6 +1,6 @@
-import { IPlace } from './Place.js';
+import { Place } from './store/domain/place.js'
 import { renderBlock } from './lib.js'
-import { toggleFavoriteItem, handleBookingButton } from './search-result-controller.js'
+import { toggleFavoriteItem, handleBookingButton} from './search-result-controller.js'
 
 
 export function renderSearchStubBlock () {
@@ -26,10 +26,10 @@ export function renderEmptyOrErrorSearchBlock (reasonMessage: string) {
     `
   )
 }
+//функция для определения растояния на основе координат
 
 
-export function renderSearchResultsBlock (searchData: []) {
-  
+export function renderSearchResultsBlock(searchData: Place[]) {
   renderBlock(
     'search-results-block',
     `
@@ -45,23 +45,23 @@ export function renderSearchResultsBlock (searchData: []) {
         </div>
     </div>
     <ul class="results-list">
-    ${searchData.map((data: IPlace, i: number) => {
-    return `<span key=${i}
+    ${searchData.map((data) => {
+    return `
     <li class="result">
       <div class="result-container">
         <div class="result-img-container">
           <div class="favorites" data-id="${data.id}"></div>
           <div  style="width:329px; height:329px;">
-          <img class="result-img" src="${data.image ? data.image : data.photos[0]}" alt="">
+          <img class="result-img" src="${data.image}" alt="">
           </div>
         </div>	
         <div class="result-info">
           <div class="result-info--header">
-            <p>${data.title ? data.title : data.name}</p>
-            <p class="price">${data.totalPrice ? data.totalPrice: data.price}&#8381;</p>
+            <p>${data.name}</p>
+            <p class="price">${data.price}&#8381;</p>
           </div>
-          <div class="result-info--map"><i class="map-icon"></i> ${data.remoteness ? data.remoteness : 0} км от вас</div>
-          <div class="result-info--descr">${data.details ? data.details : data.description}</div>
+          <div class="result-info--map"><i class="map-icon"></i> ${data.remoteness} км от вас</div>
+          <div class="result-info--descr">${data.description}</div>
           <div class="result-info--footer">
             <div>
               <button id="booking-button" data-id="${data.id}">Забронировать</button>
@@ -70,7 +70,7 @@ export function renderSearchResultsBlock (searchData: []) {
         </div>
       </div>
     </li>
-    </span>`
+    `
   }).join('')}
     </ul>`
   )

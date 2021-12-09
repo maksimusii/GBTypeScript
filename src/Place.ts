@@ -1,5 +1,5 @@
 export interface IPlace {
-  id?: string
+  id: string
   photos: string[]
   title: string
   totalPrice: number
@@ -9,6 +9,6 @@ export interface IPlace {
   image: string
   name: string
   description: string
-  remoteness: number
+  remoteness: number[] | number
   price: number
 }

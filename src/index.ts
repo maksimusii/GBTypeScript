@@ -14,7 +14,6 @@ window.addEventListener('DOMContentLoaded', () => {
   renderSearchFormBlock(new Date('2021-12-12'), new Date('2021-12-15'))
   renderSearchStubBlock()
   getFormData()
-   
   // renderToast(
   //   {text: 'Это пример уведомления. Используйте его при необходимости', type: 'success'},
   //   {name: 'Понял', handler: () => {console.log('Уведомление закрыто')}}
